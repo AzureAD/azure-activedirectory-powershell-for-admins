@@ -1,0 +1,4 @@
+userPrincipalName,displayName,password,usageLocation, licenseToAssign
+x4@graphDir1.onMicrosoft.com, X3 User, tempPa$$word, US, GraphDir1:AAD_PREMIUM
+x5@graphDir1.onMicrosoft.com, X3 User, tempPa$$word, US, GraphDir1:AAD_PREMIUM
+x6@graphDir1.onMicrosoft.com, X3 User, tempPa$$word, US, GraphDir1:AAD_PREMIUM
