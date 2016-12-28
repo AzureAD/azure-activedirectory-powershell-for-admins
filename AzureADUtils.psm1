@@ -37,14 +37,14 @@ using System.Security.Cryptography.X509Certificates;
 
 public static class AdalHelper
 {
-    public static string ObtainAadAccessTokenByPromptingUserCredential(string aadTokenIssuerUri, string resource)
+    public static string ObtainAadAccessTokenByPromptingUserCredential(string aadTokenIssuerUri, string resource, string clientId, string redirectUri)
         {
             AuthenticationContext authenticationContext = new AuthenticationContext(aadTokenIssuerUri);
             AuthenticationResult authenticationResult = authenticationContext.AcquireToken
             (
                 resource: resource,
-                clientId: "cf6d7e68-f018-4e0a-a7b3-126e053fb88d",
-                redirectUri: new Uri("urn:ietf:wg:oauth:2.0:oob"),
+                clientId: clientId, 
+                redirectUri: new Uri(redirectUri),
                 promptBehavior: PromptBehavior.Always,
                 userId: UserIdentifier.AnyUser,
                 extraQueryParameters: "nux=1"
@@ -190,7 +190,14 @@ Function Get-AzureADGraphAPIAcessTokenFromAppKey
 
  .Parameter TenantDomain
   The domain name of the tenant you want the token for.
+
+ .Parameter ClientId
+  The client ID of the application you want the token for
   
+ .Parameter Redirect URI
+  Redirect URI for the OAuth request
+  
+
  .Example
    $accessToken = Get-AzureADGraphAPIAccessTokenFromUser -TenantDomain "contoso.com"
 #>
@@ -201,9 +208,16 @@ Function Get-AzureADGraphAPIAccessTokenFromUser
     (
         [Parameter(Mandatory=$true)]
         [string]
-        $TenantDomain
+        $TenantDomain,
+        [Parameter(Mandatory=$true)]
+        [string]
+        $ClientId,
+        [Parameter(Mandatory=$true)]
+        [string]
+        $RedirectUri
+
     )
-    $AadToken = [AdalHelper]::ObtainAadAccessTokenByPromptingUserCredential("https://login.windows.net/$TenantDomain/", "https://graph.windows.net/");
+    $AadToken = [AdalHelper]::ObtainAadAccessTokenByPromptingUserCredential("https://login.windows.net/$TenantDomain/", "https://graph.windows.net/", $ClientId, $RedirectUri);
     Write-Output $AadToken
 }
 
